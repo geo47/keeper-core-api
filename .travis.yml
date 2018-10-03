@@ -1,0 +1,13 @@
+
+sudo: required
+
+services:
+  - docker
+
+env:
+  - TARGET=
+  - TARGET=with-elastic
+
+script:
+  - make build deploy ${TARGET} test
+

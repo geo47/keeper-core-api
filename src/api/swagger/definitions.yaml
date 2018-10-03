@@ -1,0 +1,349 @@
+definitions:
+  Info:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Project name
+      description:
+        type: string
+        description: Project description
+      version:
+        type: string
+        description: Project version
+      apiVersion:
+        type: string
+        description: API version
+      env:
+        type: string
+        description: Environment (development/production)
+  Error:
+    type: object
+    properties:
+      error:
+        type: string
+        description: Error description
+      meta:
+        type: object
+        description: Error meta data
+  SearchResult:
+    type: object
+    properties:
+      total:
+        type: integer
+        description: Total of items
+      hits:
+        type: array
+        items:
+          $ref: "#/definitions/Document"
+  Attachment:
+    type: object
+    properties:
+      key:
+        type: string
+        description: Attachment key
+        x-faker: random.uuid
+      contentType:
+        type: string
+        description: Content type of the attachment
+        x-faker:
+          random.arrayElement:
+            - ["image/jpeg"]
+      origin:
+        type: string
+        description: Source URL of the attachment
+        x-faker: image.imageUrl
+  Document:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Document ID
+        x-faker: random.uuid
+      title:
+        type: string
+        description: Title of the document
+        x-faker: lorem.sentence
+      content:
+        type: string
+        description: Content of the document
+        x-faker: lorem.paragraphs
+      contentType:
+        type: string
+        description: Content type of the document
+        x-faker:
+          random.arrayElement:
+            - ["text/html", "text/plain"]
+      origin:
+        type: string
+        description: Source URL of the document
+        x-faker: internet.url
+      date:
+        type: string
+        format: date-time
+        description: Date of the last modification
+        x-faker: date.past
+      labels:
+        type: array
+        description: Labels of the document
+        items:
+          type: string
+      attacments:
+        type: array
+        description: Document attachments
+        items:
+          $ref: "#/definitions/Attachment"
+  DocumentPayload:
+    type: object
+    properties:
+      title:
+        type: string
+        description: Title of the document
+      content:
+        type: string
+        description: Content of the document
+      origin:
+        type: string
+        description: Source URL of the document
+      labels:
+        type: array
+        description: Labels of the document
+        items:
+          type: string
+  Label:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Label ID
+        x-faker: random.uuid
+      label:
+        type: string
+        description: Label value
+        x-faker: commerce.product
+      color:
+        type: string
+        description: Color
+        x-faker: internet.color
+  LabelPayload:
+    type: object
+    properties:
+      label:
+        type: string
+        description: Label value
+      color:
+        type: string
+        description: Color
+  Profile:
+    type: object
+    properties:
+      uid:
+        type: string
+        description: User ID (email)
+        x-faker: internet.email
+      name:
+        type: string
+        description: "User's name"
+        x-faker: name.findName
+      date:
+        type: string
+        format: date-time
+        description: Registration date
+        x-faker: date.past
+  ProfilePayload:
+    type: object
+    properties:
+      resetApiKey:
+        type: boolean
+        description: Ask to reste the API key
+  Sharing:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Sharing ID
+        x-faker: random.uuid
+      targetLabel:
+        type: string
+        description: Targeted label ID
+      date:
+        type: string
+        format: date-time
+        description: Last modification date
+        x-faker: date.past
+      startDate:
+        type: string
+        format: date-time
+        description: Date to start the sharing
+        x-faker: date.past
+      endDate:
+        type: string
+        format: date-time
+        description: Date to end the sharing
+        x-faker: date.future
+      pub:
+        type: boolean
+        description: Set if the sharing is public or not
+        x-faker: random.boolean
+  SharingPayload:
+    type: object
+    properties:
+      startDate:
+        type: string
+        format: date-time
+        description: Date to start the sharing
+      endDate:
+        type: string
+        format: date-time
+        description: Date to end the sharing
+      pub:
+        type: boolean
+        description: Set if the sharing is public or not
+  User:
+    type: object
+    properties:
+      id:
+        type: string
+        description: User technical ID
+      uid:
+        type: string
+        description: User ID (email)
+      name:
+        type: string
+        description: "User's name"
+      date:
+        type: string
+        format: date-time
+        description: Registration date
+      hash:
+        type: string
+        description: Public hash
+      nbDocuments:
+        type: integer
+        description: Number of documents
+      nbLabels:
+        type: integer
+        description: Number of labels
+      nbSharing:
+        type: integer
+        description: Number of sharing
+      storageUsage:
+        type: integer
+        description: Storage used (bytes)
+      gravatar:
+        type: string
+        description: Gravatar URL
+  AdminInfos:
+    type: object
+    properties:
+      nbUsers:
+        type: integer
+        description: Number of users
+      nbDocuments:
+        type: integer
+        description: Number of documents
+  Webhook:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Webhook ID
+      url:
+        type: string
+        description: Payload URL
+      secret:
+        type: string
+        description: Webhook secret
+      events:
+        type: array
+        description: Event filter
+        items:
+          type: string
+      labels:
+        type: array
+        description: Label filter
+        items:
+          type: string
+      active:
+        type: boolean
+        description: Webhook status
+      cdate:
+        type: string
+        format: date-time
+        description: Date of creation
+      mdate:
+        type: string
+        format: date-time
+        description: Date of the last modification
+  WebhookPayload:
+    type: object
+    properties:
+      url:
+        type: string
+        description: Payload URL
+      secret:
+        type: string
+        description: Webhook secret
+      events:
+        type: array
+        description: Event filter
+        items:
+          type: string
+      labels:
+        type: array
+        description: Label filter
+        items:
+          type: string
+      active:
+        type: boolean
+        description: Webhook status
+  Client:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Client ID (internal)
+      name:
+        type: string
+        description: Client name
+      clientId:
+        type: string
+        description: Client ID (external)
+      secret:
+        type: string
+        description: Client secret
+      redirectUris:
+        type: array
+        description: Redirect URI list
+        items:
+          type: string
+      webOrigins:
+        type: array
+        description: Web origins list
+        items:
+          type: string
+      cdate:
+        type: string
+        format: date-time
+        description: Date of creation
+      mdate:
+        type: string
+        format: date-time
+        description: Date of the last modification
+  ClientPayload:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Client name
+      redirectUris:
+        type: array
+        description: Redirect URI list
+        items:
+          type: string
+      webOrigins:
+        type: array
+        description: Web origins list
+        items:
+          type: string
+

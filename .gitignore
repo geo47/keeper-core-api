@@ -1,0 +1,5 @@
+.env
+node_modules/
+documentation/
+var/exports
+var/cert/staging.pem
